@@ -1,0 +1,41 @@
+.title.title-left {
+    left: 10px;
+}
+
+
+.bar{
+    height: 75px;
+    box-shadow: 0 1px 1px 0 #8c642b;
+}
+.bar-subheader {
+    top: 76px;
+    text-transform: uppercase;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 40px;
+}
+.bar-subheader h2.title {
+    color: #8c642b;
+}
+.has-subheader {
+    top: 112px;
+}
+.input-label{
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+}
+.button-chocolate{
+   background-color: #8c642b;
+   color: white;
+}
+.date{
+    height: 34px;
+    padding-top: 10px;
+}
+.button-clear.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    background-color: #8c642b;
+    color: white;
+}

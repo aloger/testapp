@@ -1,0 +1,87 @@
+<ion-view>
+    <div class="bar bar-subheader">
+        <h2 class="title">Cập nhật thông tin</h2>
+    </div>
+    <ion-content ng-controller="EditCtrl" class="has-header has-subheader">
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Địa chỉ thường trú:</span>
+                <input type="text" placeholder="Ấp abc"/>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Tỉnh/Thành phố:</div>     
+                 <select>
+                    <option value = "0">Chọn tỉnh thành phố</option>
+                    <option ng-repeat="x in listProvince">
+                        {{x.name}}</option>
+                </select>
+                <!--<select>
+                    <option value = "0" label = "Chọn tỉnh thành phố"></option>
+                    <option ng-repeat="x in listProvince" value="{{x.id}}">
+                        {{x.name}}
+                    </option>
+                </select>-->
+             </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Quận huyện:</div>                
+                <input type="text" placeholder="Hàm thuận bắc"/>
+             </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Địa chỉ hiện tại:</span>
+                <input type="text" placeholder="234 Trần Hưng Đạo"/>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Tỉnh/Thành phố:</div>                
+                <input type="text" placeholder="Tp.Hồ chí minh"/>
+             </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Quận huyện:</div>                
+                <input type="text" placeholder="Quận 5"/>
+             </label>
+            <label class="item item-input item-label">
+                <span class="input-label">Số điện thoại:</span>
+                <input type="text" placeholder="0912345678"/>
+            </label>
+            <label class="item item-input item-label">
+                <div class="input-label">Email:</div>                
+                <input type="text" placeholder="exam@domain.com"/>
+             </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Tình trạng hôn nhân:</div>                
+                <input type="text" placeholder="Single"/>
+             </label>
+            <label class="item item-input item-label">
+                <div class="input-label">Số người phụ thuộc tài chính:</div>                
+                <input type="text" placeholder="3"/>
+             </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Loại nhà sở hữu:</div>                
+                <input type="text" placeholder="nhà 4 tấm"/>
+             </label>
+             <label class="item item-input item-select">
+                <div class="input-label">Câu hỏi bảo mật:</div>                
+                <input type="text" placeholder="nhà 4 tấm"/>
+             </label>
+             <label class="item item-input item-label">
+                <div class="input-label">Loại đăng ký bảo hiểm:</div>                
+                <input type="text" placeholder="Bảo hiểm nhân đạo"/>
+             </label>
+             <label class="item item-input item-select">
+                <div class="input-label">Hình thức nhận lương:</div>                
+                <input type="text" placeholder="Bảo hiểm nhân đạo"/>
+             </label>
+             <label class="item item-input item-select">
+                <div class="input-label">Loại hợp đồng:</div>                
+                <input type="text" placeholder="Hợp đồng 1 năm"/>
+             </label>
+             <label class="item item-input item-label">
+                <div class="input-label">Thâm niên làm việc:</div>                
+                <input type="text" placeholder="2 năm"/>
+             </label>
+        <div class="col-33 col-offset-33">
+            <!--<a href="#/step2" class="button button-block button-chocolate">Tiếp tục</a>-->
+            <button class="button button-block button-chocolate" ng-click="completeRegister()">Đăng ký</button>
+        </div>
+        </div>
+    </ion-content>
+</ion-view>
