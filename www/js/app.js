@@ -1,5 +1,5 @@
 
-var app = angular.module('myproject', ['ionic','ion-datetime-picker','ion-autocomplete']);
+var app = angular.module('myproject', ['ionic','ion-datetime-picker','ion-autocomplete','ngMessages']);
 
 app.config(function ($stateProvider, $urlRouterProvider) {
   $stateProvider.state('stepone', {

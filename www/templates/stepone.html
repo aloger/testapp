@@ -7,11 +7,11 @@
             <div class="list">
                 <label class="item item-input item-stacked-label">
                 <span class="input-label">Họ và tên đệm:</span>
-                <input type="text" name="LastName" ng-model="LastName" placeholder="Họ và tên đệm" ng-required="true" ng-maxlength="50"/>
+                <input type="text" name="LastName" ng-model="LastName" placeholder="Họ và tên đệm" ng-required="true" ng-maxlength="50" check-Lastname/>
             </label>
                 <label class="item item-input item-stacked-label">
                 <span class="input-label">Tên:</span>
-                <input type="text" name="FirstName" ng-required="true" ng-maxlength="50" ng-model="FirstName" placeholder="Tên"/>
+                <input type="text" name="FirstName" ng-required="true" ng-maxlength="50" ng-model="FirstName" placeholder="Tên" check-Firstname/>
             </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Chức vụ:</div>           
@@ -21,8 +21,7 @@
              </label>
                 <label class="item item-input item-stacked-label">
                 <span class="input-label">CMND/Passport:</span>
-                <input type="text" name="IdentityId" ng-model="IdentityId" placeholder="385537271" ng-required="true" ng-maxlength="12" validator="checkcmnd(myForm.IdentityId)"
-                invalid-message = "'CMND phải có 9 số'" strongSecret/>
+                <input type="text" name="IdentityId" ng-model="IdentityId"  placeholder="385537271" ng-required="true" ng-maxlength="12" check-Cmnd/>
             </label>
                 <label class="item item-input item-stacked-label" ion-datetime-picker date ng-model='IdIssuedDate'>
                 <span class="input-label">Ngày cấp:</span>
@@ -30,7 +29,7 @@
             </label>
                 <label class="item item-input item-stacked-label">
                 <span class="input-label">Nơi cấp:</span>
-                <input type="text" name="IdIssuedBy" ng-model="IdIssuedBy" placeholder="CA.Huyện" ng-required="true" ng-maxlength="250"/>
+                <input type="text" name="IdIssuedBy" ng-model="IdIssuedBy" placeholder="CA.Huyện" ng-required="true" ng-maxlength="250" check-Idissuedby/>
             </label>
                 <label class="item item-input item-stacked-label" ion-datetime-picker date ng-model='DOB'>
                 <span class="input-label">Ngày sinh:</span>
@@ -49,7 +48,8 @@
                     item-view-value-key="name"
                     items-clicked-method="itemsClicked(callback)"
                     items-removed-method="itemsRemoved(callback)"
-                    ng-required="true"/>
+                    ng-required="true"
+                    check-School/>
             </label>
                 <label class="item item-input item-stacked-label">
                 <span class="input-label">Thu nhập:</span>
@@ -57,20 +57,28 @@
             </label>
             </div>
             <div class="padding">
-                <p ng-show="myForm.LastName.$error.required">* Họ và tên lót không được để trống</p>
-                <p ng-show="myForm.LastName.$error.maxlength">* Họ và tên lót có tối đa 50 ký tự</p>
-                <p ng-show="myForm.FirstName.$error.required">* Tên không được để trống</p>
-                <p ng-show="myForm.FirstName.$error.maxlength">* Tên có tối đa 50 ký tự</p>
-                <p ng-show="myForm.IdentityId.$error.required">* CMND không được để trống</p>
-                <p ng-show="myForm.IdIssuedBy.$error.required">* Nơi cấp không được để trống</p>
-                <p ng-show="myForm.IdIssuedBy.$error.maxlength">* Nơi cấp có tối đa 250 ký tự</p>
-                <p ng-show="myForm.school.$error.required">* Tên không được để trống</p>
+                <ul class="error-msgs" ng-messages="myForm.IdentityId.$error">
+                    <li ng-message="numberValidator">* CMND phải là số</li>
+                    <li ng-message="cmndValidator">* CMND có 9 hoặc 12 số</li>
+                </ul>
+                <ul class="error-msgs" ng-messages="myForm.LastName.$error">
+                    <li ng-message="lastnamerequired">* Họ và tên lót không được để trống</li>
+                    <li ng-message="lastnamelength">* Họ và tên lót có tối đa 50 ký tự</li>
+                </ul>
+                <ul class="error-msgs" ng-messages="myForm.FirstName.$error">
+                    <li ng-message="firstnamerequired">* Tên không được để trống</li>
+                    <li ng-message="firstnamelength">* Tên không được để trống</li>
+                </ul>
+                <ul class="error-msgs" ng-messages="myForm.IdIssuedBy.$error">
+                    <li ng-message="idissuedbyrequired">* Nơi cấp không được để trống</li>
+                    <li ng-message="idissuedbylength">* Nơi cấp không được để trống</li>
+                </ul>
+                <ul class="error-msgs" ng-messages="myForm.school.$error">
+                    <li ng-message="schoolrequired">* Nơi công tác không được để trống</li>
+                    <li ng-message="schoollength">* Nơi công tác không được để trống</li>
+                </ul>
+                
             </div>
-            <ul class="error-msgs" ng-messages="myForm.IdentityId.$error">
-                <li ng-message="numberValidator">Strong secret has to contain at least 1 number</li>
-                <li ng-message="uppercaseValidator">Strong secret has to contain at least 1 uppercase</li>
-                <li ng-message="sixCharactersValidator">Strong secret has to exactly 6 characters long</li>
-            </ul>
             <div class="col-33 col-offset-33">
                 <!--<a href="#/step2" class="button button-block button-chocolate">Tiếp tục</a>-->
                 <button class="button button-block button-chocolate" ng-disabled="myForm.$invalid" ng-click="GotoStep2()">Tiếp tục</button>
