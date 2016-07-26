@@ -1,19 +1,19 @@
-app.directive('checkCmnd', function () {
+app.directive('checkResidentaddress', function () {
     return {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, element, attr, ctrl) {
             function customValidator(ngModelValue) {
 
-                if (/[0-9]/.test(ngModelValue) && ngModelValue.length != 0) {
-                    ctrl.$setValidity('numberValidator', true);
+                if (ngModelValue.length === 0) {
+                    ctrl.$setValidity('residentaddressrequired', false);
                 } else {
-                    ctrl.$setValidity('numberValidator', false);
+                    ctrl.$setValidity('residentaddressrequired', true);
                 }
-                if (ngModelValue.length === 9 || ngModelValue.length === 12) {
-                    ctrl.$setValidity('cmndValidator', true);
+                if (ngModelValue.length > 250) {
+                    ctrl.$setValidity('residentaddresslength', false);
                 } else {
-                    ctrl.$setValidity('cmndValidator', false);
+                    ctrl.$setValidity('residentaddresslength', true);
                 }
                 return ngModelValue;
             }
@@ -22,7 +22,7 @@ app.directive('checkCmnd', function () {
     };
 })
 
-app.directive('checkLastname', function () {
+app.directive('checkCurrentaddress', function () {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -30,14 +30,14 @@ app.directive('checkLastname', function () {
             function customValidator(ngModelValue) {
 
                 if (ngModelValue.length === 0) {
-                    ctrl.$setValidity('lastnamerequired', false);
+                    ctrl.$setValidity('currentaddressrequired', false);
                 } else {
-                    ctrl.$setValidity('lastnamerequired', true);
+                    ctrl.$setValidity('currentaddressrequired', true);
                 }
-                if (ngModelValue.length > 50) {
-                    ctrl.$setValidity('lastnamelength', false);
+                if (ngModelValue.length > 250) {
+                    ctrl.$setValidity('currentaddresslength', false);
                 } else {
-                    ctrl.$setValidity('lastnamelength', true);
+                    ctrl.$setValidity('currentaddresslength', true);
                 }
                 return ngModelValue;
             }
@@ -46,7 +46,7 @@ app.directive('checkLastname', function () {
     };
 })
 
-app.directive('checkFirstname', function () {
+app.directive('checkPhone', function () {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -54,14 +54,14 @@ app.directive('checkFirstname', function () {
             function customValidator(ngModelValue) {
 
                 if (ngModelValue.length === 0) {
-                    ctrl.$setValidity('firstnamerequired', false);
+                    ctrl.$setValidity('phonerequired', false);
                 } else {
-                    ctrl.$setValidity('firstnamerequired', true);
+                    ctrl.$setValidity('phonerequired', true);
                 }
-                if (ngModelValue.length > 50) {
-                    ctrl.$setValidity('firstnamelength', false);
+                if (/(\+84|0)\d{9,10}/.test(ngModelValue)) {
+                    ctrl.$setValidity('phonevalid', true);
                 } else {
-                    ctrl.$setValidity('firstnamelength', true);
+                    ctrl.$setValidity('phonevalid', false);
                 }
                 return ngModelValue;
             }
@@ -70,7 +70,7 @@ app.directive('checkFirstname', function () {
     };
 })
 
-app.directive('checkIdissuedby', function () {
+app.directive('checkEmail', function () {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -78,14 +78,14 @@ app.directive('checkIdissuedby', function () {
             function customValidator(ngModelValue) {
 
                 if (ngModelValue.length === 0) {
-                    ctrl.$setValidity('idissuedbyrequired', false);
+                    ctrl.$setValidity('emailrequired', false);
                 } else {
-                    ctrl.$setValidity('idissuedbyrequired', true);
+                    ctrl.$setValidity('emailrequired', true);
                 }
-                if (ngModelValue.length > 200) {
-                    ctrl.$setValidity('idissuedbylength', false);
+                if (/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i.test(ngModelValue)) {
+                    ctrl.$setValidity('emailvalid', true);
                 } else {
-                    ctrl.$setValidity('idissuedbylength', true);
+                    ctrl.$setValidity('emailvalid', false);
                 }
                 return ngModelValue;
             }
@@ -94,17 +94,17 @@ app.directive('checkIdissuedby', function () {
     };
 })
 
-app.directive('checkSchool', function () {
+app.directive('checkNumberdepent', function () {
     return {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, element, attr, ctrl) {
             function customValidator(ngModelValue) {
 
-                if (ngModelValue.length === 0) {
-                    ctrl.$setValidity('schoolrequired', false);
+                if (ngModelValue.length != 0||/[0-9]/.test(ngModelValue)) {
+                    ctrl.$setValidity('numberdepentvalid', true);
                 } else {
-                    ctrl.$setValidity('schoolrequired', true);
+                    ctrl.$setValidity('numberdepentvalid', false);
                 }
                 return ngModelValue;
             }
@@ -112,7 +112,8 @@ app.directive('checkSchool', function () {
         }
     };
 })
-app.directive('checkDOB', function () {
+
+app.directive('checkSecrectquestion', function () {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -120,14 +121,14 @@ app.directive('checkDOB', function () {
             function customValidator(ngModelValue) {
 
                 if (ngModelValue.length === 0) {
-                    ctrl.$setValidity('dobrequired', false);
+                    ctrl.$setValidity('secrectquestionrequired', false);
                 } else {
-                    ctrl.$setValidity('dobrequired', true);
+                    ctrl.$setValidity('secrectquestionrequired', true);
                 }
-                if (ngModelValue.val() >= new Date()) {
-                    ctrl.$setValidity('doblessthantoday', false);
+                if (ngModelValue.length > 100) {
+                    ctrl.$setValidity('secrectquestionlength', true);
                 } else {
-                    ctrl.$setValidity('doblessthantoday', true);
+                    ctrl.$setValidity('secrectquestionlength', false);
                 }
                 return ngModelValue;
             }

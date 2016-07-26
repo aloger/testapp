@@ -6,9 +6,9 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     url: '/stepone',
     templateUrl: 'templates/stepone.html',
   });
-  $stateProvider.state('step2',{
-    url: '/step2',
-    templateUrl:'templates/step2.html',
+  $stateProvider.state('steptwo',{
+    url: '/steptwo',
+    templateUrl:'templates/steptwo.html',
   });
   $stateProvider.state('complete',{
     url: '/complete',

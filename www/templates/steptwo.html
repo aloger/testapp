@@ -1,0 +1,129 @@
+<ion-view>
+    <div class="bar bar-subheader">
+        <h2 class="title">Cập nhật thông tin</h2>
+    </div>
+    <ion-content ng-controller="stepTwoCtrl" class="has-header has-subheader">
+        <form name="myForm" novalidate>
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                <span class="input-label">Địa chỉ thường trú:</span>
+                <input type="text" name="ResidentAddress" ng-model="ResidentAddress" placeholder="Ấp abc" check-Residentaddress/>
+            </label>
+                <label class="item item-input item-select">
+                <div class="input-label">Tỉnh/Thành phố:</div>     
+                 <select ng-model="District" ng-init="listProvince[0]" ng-change="getDistrict(District)">
+                    <option value="">Chọn tỉnh thành phố</option>
+                   <option ng-repeat="item in listProvince"  value="{{item.Id}}">{{item.Name}}</option>
+                </select>
+             </label>
+                <label class="item item-input item-select">
+                <div class="input-label">Quận huyện:</div>                
+                 <select>
+                    <option ng-repeat="x in districts" value="{{x.Id}}">{{x.Name}}</option>
+                </select>
+             </label>
+                <label class="item item-input item-stacked-label">
+                <span class="input-label">Địa chỉ hiện tại:</span>
+                <input type="text" name="CurrentAddress" ng-model="CurrentAddress" placeholder="234 Trần Hưng Đạo" check-Currentaddress/>
+            </label>
+                <label class="item item-input item-select">
+                <div class="input-label">Tỉnh/Thành phố:</div>                
+                <select ng-model="Districtcurrent" ng-init="listProvince[0]" ng-change="getDistrictcurrent(Districtcurrent)">
+                    <option value="">Chọn tỉnh thành phố</option>
+                   <option ng-repeat="item in listProvince"  value="{{item.Id}}">{{item.Name}}</option>
+                </select>
+             </label>
+                <label class="item item-input item-select">
+                <div class="input-label">Quận huyện:</div>                
+                <select>
+                    <option ng-repeat="x in districtscurrent" value="{{x.Id}}">{{x.Name}}</option>
+                </select>
+             </label>
+
+                <div class="item item-input">
+                    <span class="input-label">Thời gian cư trú:</span>
+                    <input type="text" placeholder="Năm" ng-model="YearAddress" name="YearAddress" />
+                    <input type="text" placeholder="Tháng" ng-model="MonthAddress" name="MonthAddress" />
+                </div>
+
+                <label class="item item-input item-label">
+                <span class="input-label">Số điện thoại:</span>
+                <input type="text" placeholder="0912345678" ng-model="Phone" name="Phone" check-Phone/>
+            </label>
+                <label class="item item-input item-label">
+                <div class="input-label">Email:</div>                
+                <input type="email" placeholder="exam@domain.com" ng-model="Email" name="Email" check-Email/>
+             </label>
+                <label class="item item-input item-select">
+                <div class="input-label">Tình trạng hôn nhân:</div>                
+                <select>
+                    <option ng-repeat="x in listMaritalStatus" value="{{x.Id}}">{{x.Name}}</option>
+                </select>
+             </label>
+                <label class="item item-input item-label">
+                <div class="input-label">Số người phụ thuộc tài chính:</div>                
+                <input type="text" placeholder="3" ng-model="NumberDepent" name="NumberDepent" check-Numberdepent/>
+             </label>
+                <label class="item item-input item-select">
+                <div class="input-label">Loại nhà sở hữu:</div>                
+                <select>
+                    <option ng-repeat="x in listHome" value="{{x.Id}}">{{x.Name}}</option>
+                </select>
+             </label>
+                <label class="item item-input item-stacked-label">
+                <span class="input-label">Câu hỏi bảo mật? <br/>(Họ tên mẹ hoặc tên trường đầu tiên):</span>                
+                <input type="text" placeholder="Bánh bèo" ng-model="SecrectQuestion" name="SecrectQuestion" check-Secrectquestion/>
+             </label>
+                <label class="item item-input item-label">
+                <div class="input-label">Loại đăng ký bảo hiểm:</div>                
+                <input type="text" placeholder="Bảo hiểm nhân đạo"/>
+             </label>
+                <label class="item item-input item-select">
+                <div class="input-label">Hình thức nhận lương:</div>                
+                <input type="text" placeholder="Bảo hiểm nhân đạo"/>
+             </label>
+                <label class="item item-input item-select">
+                <div class="input-label">Loại hợp đồng:</div>                
+                <select>
+                    <option ng-repeat="x in laborcontracts" value="{{x.Id}}">{{x.Name}}</option>
+                </select>
+             </label>
+                <div class="item item-input">
+                <div class="input-label">Thâm niên làm việc:</div>
+                    <input type="text" placeholder="Năm" ng-model="YearSeniority" name="YearSeniority" />
+                    <input type="text" placeholder="Tháng" ng-model="MonthSeniority" name="MonthSeniority" />
+             </div>
+                <div class="padding">
+                    <ul class="error-msgs" ng-messages="myForm.ResidentAddress.$error">
+                        <li ng-message="residentaddressrequired">* Địa chỉ thường trú không được để trống</li>
+                        <li ng-message="residentaddresslength">* Địa chỉ thường trú có tối đa 250 ký tự</li>
+                    </ul>
+                    <ul class="error-msgs" ng-messages="myForm.CurrentAddress.$error">
+                        <li ng-message="currentaddressrequired">* Địa chỉ hiện tại không được để trống</li>
+                        <li ng-message="currentaddresslength">* Địa chỉ hiện tại có tối đa 250 ký tự</li>
+                    </ul>
+                    <ul class="error-msgs" ng-messages="myForm.Phone.$error">
+                        <li ng-message="phonerequired">* Số điện thoại không được để trống</li>
+                        <li ng-message="phonevalid">* Số điện thoại không đúng</li>
+                    </ul>
+                    <ul class="error-msgs" ng-messages="myForm.Email.$error">
+                        <li ng-message="emailrequired">* Email không được bỏ trống</li>
+                        <li ng-message="emailvalid">* Email không đúng định dạng</li>
+                    </ul>
+                    <ul class="error-msgs" ng-messages="myForm.SecrectQuestion.$error">
+                        <li ng-message="secrectquestionrequired">* Câu hỏi bảo mật không được bỏ trống</li>
+                        <li ng-message="secrectquestionlength">* Câu hỏi bảo mật có tối đa 100 ký tự</li>
+                    </ul>
+                    <ul class="error-msgs" ng-messages="myForm.NumberDepent.$error">
+                        <li ng-message="numberdepentvalid">* Số người phụ thuộc tài chính không đúng</li>
+                    </ul>
+
+                </div>
+                <div class="col-33 col-offset-33">
+                    <!--<a href="#/step2" class="button button-block button-chocolate">Tiếp tục</a>-->
+                    <button class="button button-block button-chocolate" ng-click="completeRegister()">Đăng ký</button>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

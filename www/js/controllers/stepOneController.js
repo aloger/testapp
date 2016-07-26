@@ -1,39 +1,20 @@
 
 app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
+    $scope.IdIssuedDate = new Date();
     $scope.school = "";
     $scope.clickedValueModel = "";
     $scope.removedValueModel = "";
-    var items =
-        [
-            {
-                'id': '1',
-                'name': 'Trường maricurie'
-            },
-            {
-                'id': '2',
-                'name': 'Trường Lê Hồng Phong'
-            },
-            {
-                'id': '3',
-                'name': 'Trường Nguyễn trãi'
-            },
-            {
-                'id': '4',
-                'name': 'Trường Nguyễn thị minh khai'
-            },
-            {
-                'id': '5',
-                'name': 'Trường Lê Quý Đôn'
-            }
-        ];
+    var items ; 
+    finacialSrv.getListSchools().then(function (response) {
+        items=response.data.ResponseData
+    })       
     $scope.getTestItems = function (query) {
         if (query) {
-            return items.filter(function (value) {
-                return (value.id.indexOf(query) != -1 || value.name.toLowerCase().indexOf(query.toLowerCase()) != -1)
+            return items.filter(function (item) {
+                return (item.Id.indexOf(query) != -1 || item.Name.toLowerCase().indexOf(query.toLowerCase()) != -1)
             });
-
         }
-        return { "id": "", "name": "Không tìm thấy" };
+        return { "Id": "", "Name": "Không tìm thấy" };
     }
     $scope.itemsClicked = function (callback) {
         $scope.clickedValueModel = callback;
@@ -46,7 +27,7 @@ app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
         //Xu lý abc ...
         //
         //chuyen qua step2.
-        // $state.go('step2')
+         $state.go('steptwo')
     };
     $scope.checkcmnd = function (IdentityId) {
         if (IdentityId.length === 9) {
