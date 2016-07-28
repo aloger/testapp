@@ -4,6 +4,17 @@ app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
     $scope.school = "";
     $scope.clickedValueModel = "";
     $scope.removedValueModel = "";
+    $scope.gender =
+        [
+            {
+                'Id': '0',
+                'Name': 'Nam'
+            },
+            {
+                'Id': '1',
+                'Name': 'Nữ'
+            }
+        ];
     var items;
     finacialSrv.getListSchools().then(function (response) {
         items = response.data.ResponseData
@@ -24,7 +35,7 @@ app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
     };
     //Handle event clicked.
     $scope.GotoStep2 = function () {
-         finacialSrv.clearDataStepOne();
+        finacialSrv.clearDataStepOne();
         if ($scope.LastName === "" || $scope.LastName === null || $scope.LastName === undefined)
             return;
         if ($scope.FirstName === "" || $scope.FirstName === null || $scope.FirstName === undefined)
@@ -48,6 +59,7 @@ app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
         $scope.data = {
             LastName: $scope.LastName,
             FirstName: $scope.FirstName,
+            Gender: $scope.Gender,
             OfficerId: $scope.Position,
             IdentityId: $scope.IdentityId,
             IdIssuedDate: $scope.IdIssuedDate,

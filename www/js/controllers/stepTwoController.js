@@ -1,9 +1,21 @@
 app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
 
-
+    var stepOneData = finacialSrv.getStepOne();
     finacialSrv.getListProvinces().then(function (response) {
         $scope.listProvince = response.data.ResponseData
     })
+    if (stepOneData != null && stepOneData.lenght != 0) {
+        finacialSrv.getPackage(stepOneData[0].OfficerId).then(function (response) {
+            if (response.data.ResponseData.length != 0) {
+                $scope.package = response.data.ResponseData[0];
+            } else {
+                $scope.package = [];
+            }
+        });
+    } else {
+        $scope.package = [];
+    }
+
     $scope.getDistrict = function (provinceId) {
         if (provinceId === null || provinceId == undefined || provinceId === "") {
             $scope.districts = [{
@@ -39,79 +51,92 @@ app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
         }
     }
     $scope.listMaritalStatus =
-        [{
-            'Id': '1',
-            'Name': 'Độc thân'
-        },
+        [
             {
-                'Id': '2',
+                'Id': '0',
+                'Name': 'Độc thân'
+            },
+            {
+                'Id': '1',
                 'Name': 'Đã kết hôn'
             },
             {
-                'Id': '3',
-                'Name': 'Ở giá'
+                'Id': '2',
+                'Name': 'Khác'
             }];
     $scope.listHome =
         [
             {
+                'Id': '0',
+                'Name': 'Nhà riêng'
+            },
+            {
                 'Id': '1',
-                'Name': 'Nhà nguyên căn'
+                'Name': 'Nhà thuê'
             },
             {
                 'Id': '2',
-                'Name': 'Phòng trọ'
+                'Name': 'Nhà bố mẹ'
             },
             {
                 'Id': '3',
-                'Name': 'Motel'
+                'Name': 'Mua trả góp'
+            },
+            {
+                'Id': '4',
+                'Name': 'Khác'
             }
         ];
     $scope.laborcontracts =
         [
             {
-                'Id': '1',
+                'Id': '0',
                 'Name': 'Hợp đồng dưới 1 năm'
             },
             {
-                'Id': '2',
+                'Id': '1',
                 'Name': 'Hợp đồng 1-3 năm'
             },
             {
-                'Id': '3',
+                'Id': '2',
                 'Name': 'Hợp đồng không thời hạn'
+            },
+            {
+                'Id': '3',
+                'Name': 'Khác'
             }
         ];
     $scope.formofwage =
         [
             {
-                'Id': '1',
+                'Id': '0',
                 'Name': 'Tiền mặt'
             },
             {
-                'Id': '2',
+                'Id': '1',
                 'Name': 'Chuyển khoản qua BIDV'
             },
             {
-                'Id': '3',
+                'Id': '2',
                 'Name': 'Chuyển khoản qua ngân hàng khác'
             }
         ];
     $scope.insurrance =
         [
             {
-                'Id': '1',
+                'Id': '0',
                 'Name': 'Bảo hiểm tai nạn'
             },
             {
-                'Id': '2',
+                'Id': '1',
                 'Name': 'Bảo hiểm nhân thọ'
             },
             {
-                'Id': '3',
+                'Id': '2',
                 'Name': 'Tham gia loại trên 2 năm'
             },
             {
-                'Id': '4',
+                'Id': '3',
                 'Name': 'Không tham gia bảo hiểm'
             }
         ];
@@ -157,8 +182,8 @@ app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
         //     $state.go('steptwo')
 
         $scope.data = {
-            ResidentAddress: $scope.ResidentAddress + $scope.District + $scope.Province,
-            CurrentAddress: $scope.CurrentAddress + $scope.DistrictCurrent + $scope.ProvinceCurrent,
+            ResidentAddress: $scope.ResidentAddress + ' ' + $scope.District + ' ' + $scope.Province,
+            CurrentAddress: $scope.CurrentAddress + ' ' + $scope.DistrictCurrent + ' ' + $scope.ProvinceCurrent,
 
             YearAddress: $scope.YearAddress,
             MonthAddress: $scope.MonthAddress,
@@ -167,33 +192,34 @@ app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
             MaritalStatus: $scope.MaritalStatus,
             NumberDepent: $scope.NumberDepent,
             Ownhouses: $scope.HomeStatus,
-            Answer: $scope.SecrectQuestion,
+            PrimarySchool: $scope.SecrectQuestion,
             Formsofwage: $scope.Formofwage,
             Typeofwork: $scope.Insurrance,
             Laborcontracts: $scope.Contract,
+            PackageId: $scope.package.Id,
+            LoanAmount: $scope.LoanAmount,
             YearSeniority: $scope.YearSeniority,
             MonthSeniority: $scope.MonthSeniority,
             ServiceInternet: $scope.BIDVOnline,
             ServiceMobile: $scope.BIDVMobile
         }
-        var stepOneData = finacialSrv.getStepOne();
-        // var data = new Object();
-        // data.FirstName = "thien";
         var data = {
-            LastName: "tdhien",
-            FirstName: stepOneData.FirstName,
-            OfficerId: stepOneData.OfficerId,
-            IdentityId: stepOneData.IdentityId,
-            IdIssuedDate: stepOneData.IdIssuedDate,
-            IdIssuedBy: stepOneData.IdIssuedBy,
-            DOB: stepOneData.DOB,
-            SchoolId: stepOneData.SchoolId,
-            Aboutsalary: stepOneData.Aboutsalary,
+            LastName: stepOneData[0].LastName,
+            FirstName: stepOneData[0].FirstName,
+            Gender: stepOneData[0].Gender,
+            OfficerId: stepOneData[0].OfficerId,
+            IdentityId: stepOneData[0].IdentityId,
+            IdIssuedDate: stepOneData[0].IdIssuedDate.getDate() + "/" + stepOneData[0].IdIssuedDate.getMonth() + "/" + stepOneData[0].IdIssuedDate.getFullYear(),
+            IdIssuedBy: stepOneData[0].IdIssuedBy,
+            DOB: stepOneData[0].DOB.getDate() + "/" + stepOneData[0].DOB.getMonth() + "/" + stepOneData[0].DOB.getFullYear(),
+            SchoolId: stepOneData[0].SchoolId,
+            Aboutsalary: stepOneData[0].Aboutsalary,
 
 
             ResidentAddress: $scope.data.ResidentAddress,
             CurrentAddress: $scope.data.CurrentAddress,
-
+            LoanAmount: $scope.data.LoanAmount,
+            PackageId: $scope.data.PackageId,
             YearAddress: $scope.data.YearAddress,
             MonthAddress: $scope.data.MonthAddress,
             Phone: $scope.data.Phone,
@@ -201,7 +227,7 @@ app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
             MaritalStatus: $scope.data.MaritalStatus,
             NumberDepent: $scope.data.NumberDepent,
             Ownhouses: $scope.data.Ownhouses,
-            Answer: $scope.data.Answer,
+            PrimarySchool: $scope.data.PrimarySchool,
             Formsofwage: $scope.data.Formsofwage,
             Typeofwork: $scope.data.Typeofwork,
             Laborcontracts: $scope.data.Laborcontracts,
@@ -210,10 +236,6 @@ app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
             ServiceInternet: $scope.data.ServiceInternet,
             ServiceMobile: $scope.data.ServiceMobile
         }
-        var data = $.param({
-                LastName: "Tjoem",
-               
-            });
         finacialSrv.saveStepTwo($scope.data);
 
         finacialSrv.save(data);

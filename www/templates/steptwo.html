@@ -4,6 +4,13 @@
     </div>
     <ion-content ng-controller="stepTwoCtrl" class="has-header has-subheader">
         <form name="myForm" novalidate>
+
+            <div class="range range-assertive">
+                <i class="icon ion-ios7-sunny-outline"></i>
+                <input type="range" min="{{package.MinValue}}" step="1000000" max="{{package.MaxValue}}" value="" ng-model="LoanAmount"> {{LoanAmount}}/{{package.MaxValue}}
+                <i class="icon ion-ios7-sunny"></i>
+            </div>
+
             <div class="list">
                 <label class="item item-input item-stacked-label">
                 <span class="input-label">Địa chỉ thường trú:</span>
@@ -19,7 +26,7 @@
                 <label class="item item-input item-select">
                 <div class="input-label">Quận huyện:</div>                
                  <select ng-model="District">
-                    <option ng-repeat="x in districts" value="{{x.Id}}">{{x.Name}}</option>
+                    <option ng-repeat="x in districts" value="{{x.Name}}">{{x.Name}}</option>
                 </select>
              </label>
                 <label class="item item-input item-stacked-label">
@@ -36,7 +43,7 @@
                 <label class="item item-input item-select">
                 <div class="input-label">Quận huyện:</div>                
                 <select ng-model="DistrictCurrent">
-                    <option ng-repeat="x in districtscurrent" value="{{x.Id}}">{{x.Name}}</option>
+                    <option ng-repeat="x in districtscurrent" value="{{x.Name}}">{{x.Name}}</option>
                 </select>
              </label>
 
@@ -99,8 +106,8 @@
                 </div>
                 <div class="controls" style="margin-top: -20px;">
                     <div class="input-label">Sử dụng dịch vụ ngân hàng BIDV</div>
-                    <ion-checkbox ng-model="BIDVOnline" >BIDV Online</ion-checkbox>
-                    <ion-checkbox ng-model="BIDVMobile" >BIDV Mobile</ion-checkbox>
+                    <ion-checkbox ng-model="BIDVOnline">BIDV Online</ion-checkbox>
+                    <ion-checkbox ng-model="BIDVMobile">BIDV Mobile</ion-checkbox>
                 </div>
 
                 <div class="padding">
