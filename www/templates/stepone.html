@@ -15,8 +15,8 @@
             </label>
                 <label class="item item-input item-select">
                 <span class="input-label">Chức vụ:</span>           
-                <select>
-                    <option ng-repeat="position in positions" value="{{position.Id}}">{{position.Name}}</option>
+                <select ng-model="Position">
+                    <option ng-repeat="position in positions" ng-app="" value="{{position.Id}}">{{position.Name}}</option>
                 </select>
              </label>
                 <label class="item item-input item-stacked-label">
@@ -54,7 +54,7 @@
             </label>
                 <label class="item item-input item-select">
                 <span class="input-label">Thu nhập:</span>
-                <select name="Incomes">
+                <select name="Incomes" ng-model="aboutsalary">
                     <option value="">Chọn mức lương...</option>
                     <option value="0-1000000">Thấp hơn 1tr</option>
                     <option value="1000000-3000000">Từ 1tr đến 3tr</option>

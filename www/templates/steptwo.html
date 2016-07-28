@@ -11,14 +11,14 @@
             </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Tỉnh/Thành phố:</div>     
-                 <select ng-model="District" ng-init="listProvince[0]" ng-change="getDistrict(District)">
+                 <select ng-model="Province" ng-init="listProvince[0]" ng-change="getDistrict(Province)">
                     <option value="">Chọn tỉnh thành phố</option>
                    <option ng-repeat="item in listProvince"  value="{{item.Id}}">{{item.Name}}</option>
                 </select>
              </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Quận huyện:</div>                
-                 <select>
+                 <select ng-model="District">
                     <option ng-repeat="x in districts" value="{{x.Id}}">{{x.Name}}</option>
                 </select>
              </label>
@@ -28,14 +28,14 @@
             </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Tỉnh/Thành phố:</div>                
-                <select ng-model="Districtcurrent" ng-init="listProvince[0]" ng-change="getDistrictcurrent(Districtcurrent)">
+                <select ng-model="ProvinceCurrent" ng-init="listProvince[0]" ng-change="getDistrictcurrent(ProvinceCurrent)">
                     <option value="">Chọn tỉnh thành phố</option>
                    <option ng-repeat="item in listProvince"  value="{{item.Id}}">{{item.Name}}</option>
                 </select>
              </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Quận huyện:</div>                
-                <select>
+                <select ng-model="DistrictCurrent">
                     <option ng-repeat="x in districtscurrent" value="{{x.Id}}">{{x.Name}}</option>
                 </select>
              </label>
@@ -56,7 +56,7 @@
              </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Tình trạng hôn nhân:</div>                
-                <select>
+                <select ng-model="MaritalStatus">
                     <option ng-repeat="x in listMaritalStatus" value="{{x.Id}}">{{x.Name}}</option>
                 </select>
              </label>
@@ -66,7 +66,7 @@
              </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Loại nhà sở hữu:</div>                
-                <select>
+                <select ng-model="HomeStatus">
                     <option ng-repeat="x in listHome" value="{{x.Id}}">{{x.Name}}</option>
                 </select>
              </label>
@@ -74,25 +74,35 @@
                 <span class="input-label">Câu hỏi bảo mật? <br/>(Họ tên mẹ hoặc tên trường đầu tiên):</span>                
                 <input type="text" placeholder="Bánh bèo" ng-model="SecrectQuestion" name="SecrectQuestion" check-Secrectquestion/>
              </label>
-                <label class="item item-input item-label">
+                <label class="item item-input item-select">
                 <div class="input-label">Loại đăng ký bảo hiểm:</div>                
-                <input type="text" placeholder="Bảo hiểm nhân đạo"/>
+                <select ng-model="Formofwage">
+                    <option ng-repeat="x in formofwage" value="{{x.Id}}">{{x.Name}}</option>
+                </select>
              </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Hình thức nhận lương:</div>                
-                <input type="text" placeholder="Bảo hiểm nhân đạo"/>
+                <select ng-model="Insurrance">
+                    <option ng-repeat="x in insurrance" value="{{x.Id}}">{{x.Name}}</option>
+                </select>
              </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Loại hợp đồng:</div>                
-                <select>
+                <select ng-model="Contract">
                     <option ng-repeat="x in laborcontracts" value="{{x.Id}}">{{x.Name}}</option>
                 </select>
              </label>
                 <div class="item item-input">
-                <div class="input-label">Thâm niên làm việc:</div>
+                    <div class="input-label">Thâm niên làm việc:</div>
                     <input type="text" placeholder="Năm" ng-model="YearSeniority" name="YearSeniority" />
                     <input type="text" placeholder="Tháng" ng-model="MonthSeniority" name="MonthSeniority" />
-             </div>
+                </div>
+                <div class="controls" style="margin-top: -20px;">
+                    <div class="input-label">Sử dụng dịch vụ ngân hàng BIDV</div>
+                    <ion-checkbox ng-model="BIDVOnline" >BIDV Online</ion-checkbox>
+                    <ion-checkbox ng-model="BIDVMobile" >BIDV Mobile</ion-checkbox>
+                </div>
+
                 <div class="padding">
                     <ul class="error-msgs" ng-messages="myForm.ResidentAddress.$error">
                         <li ng-message="residentaddressrequired">* Địa chỉ thường trú không được để trống</li>

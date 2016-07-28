@@ -4,10 +4,10 @@ app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
     $scope.school = "";
     $scope.clickedValueModel = "";
     $scope.removedValueModel = "";
-    var items ; 
+    var items;
     finacialSrv.getListSchools().then(function (response) {
-        items=response.data.ResponseData
-    })       
+        items = response.data.ResponseData
+    })
     $scope.getTestItems = function (query) {
         if (query) {
             return items.filter(function (item) {
@@ -24,10 +24,40 @@ app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
     };
     //Handle event clicked.
     $scope.GotoStep2 = function () {
-        //Xu lý abc ...
-        //
-        //chuyen qua step2.
-         $state.go('steptwo')
+         finacialSrv.clearDataStepOne();
+        if ($scope.LastName === "" || $scope.LastName === null || $scope.LastName === undefined)
+            return;
+        if ($scope.FirstName === "" || $scope.FirstName === null || $scope.FirstName === undefined)
+            return;
+        if ($scope.LastName === "" || $scope.LastName === null || $scope.LastName === undefined)
+            return;
+        if ($scope.Position === "" || $scope.Position === null || $scope.Position === undefined)
+            return;
+        if ($scope.IdentityId === "" || $scope.IdentityId === null || $scope.IdentityId === undefined)
+            return;
+        if ($scope.IdIssuedDate === "" || $scope.IdIssuedDate === null || $scope.IdIssuedDate === undefined)
+            return;
+        if ($scope.IdIssuedBy === "" || $scope.IdIssuedBy === null || $scope.IdIssuedBy === undefined)
+            return;
+        if ($scope.DOB === "" || $scope.DOB === null || $scope.DOB === undefined)
+            return;
+        if ($scope.school === "" || $scope.school === null || $scope.school === undefined)
+            return;
+        if ($scope.aboutsalary === "" || $scope.aboutsalary === null || $scope.aboutsalary === undefined)
+            return;
+        $scope.data = {
+            LastName: $scope.LastName,
+            FirstName: $scope.FirstName,
+            OfficerId: $scope.Position,
+            IdentityId: $scope.IdentityId,
+            IdIssuedDate: $scope.IdIssuedDate,
+            IdIssuedBy: $scope.IdIssuedBy,
+            DOB: $scope.DOB,
+            SchoolId: $scope.school,
+            Aboutsalary: $scope.aboutsalary,
+        }
+        finacialSrv.saveStepOne($scope.data);
+        $state.go('steptwo')
     };
     $scope.checkcmnd = function (IdentityId) {
         if (IdentityId.length === 9) {
@@ -35,8 +65,8 @@ app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
         }
     }
 
-        //Positions
-        finacialSrv.getPositions().then(function (response) {
-            $scope.positions = response.data.ResponseData
-        })
-    });
+    //Positions
+    finacialSrv.getPositions().then(function (response) {
+        $scope.positions = response.data.ResponseData
+    })
+});

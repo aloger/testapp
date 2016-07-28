@@ -101,7 +101,7 @@ app.directive('checkNumberdepent', function () {
         link: function (scope, element, attr, ctrl) {
             function customValidator(ngModelValue) {
 
-                if (ngModelValue.length != 0||/[0-9]/.test(ngModelValue)) {
+                if (ngModelValue.length == 0 || /^[0-9]+$/i.test(ngModelValue)) {
                     ctrl.$setValidity('numberdepentvalid', true);
                 } else {
                     ctrl.$setValidity('numberdepentvalid', false);
@@ -126,9 +126,9 @@ app.directive('checkSecrectquestion', function () {
                     ctrl.$setValidity('secrectquestionrequired', true);
                 }
                 if (ngModelValue.length > 100) {
-                    ctrl.$setValidity('secrectquestionlength', true);
-                } else {
                     ctrl.$setValidity('secrectquestionlength', false);
+                } else {
+                    ctrl.$setValidity('secrectquestionlength', true);
                 }
                 return ngModelValue;
             }
