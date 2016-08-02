@@ -1,11 +1,16 @@
 
-app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
-    $scope.IdIssuedDate = new Date();
+app.controller('stepOneCtrl', function ($scope, $state, $ionicPopup, finacialSrv) {
+    $scope.IdIssuedDate = "";
     $scope.school = "";
+
     $scope.clickedValueModel = "";
     $scope.removedValueModel = "";
     $scope.gender =
         [
+            {
+                'Id': '',
+                'Name': 'Chọn giới tính'
+            },
             {
                 'Id': '0',
                 'Name': 'Nam'
@@ -33,29 +38,48 @@ app.controller('stepOneCtrl', function ($scope, $state, finacialSrv) {
     $scope.itemsRemoved = function (callback) {
         $scope.removedValueModel = callback;
     };
+    var showAlert = function (messenger) {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Thông báo',
+            template: messenger
+        });
+        alertPopup.then(function (res) {
+        });
+    };
     //Handle event clicked.
     $scope.GotoStep2 = function () {
         finacialSrv.clearDataStepOne();
-        if ($scope.LastName === "" || $scope.LastName === null || $scope.LastName === undefined)
-            return;
-        if ($scope.FirstName === "" || $scope.FirstName === null || $scope.FirstName === undefined)
-            return;
-        if ($scope.LastName === "" || $scope.LastName === null || $scope.LastName === undefined)
-            return;
-        if ($scope.Position === "" || $scope.Position === null || $scope.Position === undefined)
-            return;
-        if ($scope.IdentityId === "" || $scope.IdentityId === null || $scope.IdentityId === undefined)
-            return;
-        if ($scope.IdIssuedDate === "" || $scope.IdIssuedDate === null || $scope.IdIssuedDate === undefined)
-            return;
-        if ($scope.IdIssuedBy === "" || $scope.IdIssuedBy === null || $scope.IdIssuedBy === undefined)
-            return;
-        if ($scope.DOB === "" || $scope.DOB === null || $scope.DOB === undefined)
-            return;
-        if ($scope.school === "" || $scope.school === null || $scope.school === undefined)
-            return;
-        if ($scope.aboutsalary === "" || $scope.aboutsalary === null || $scope.aboutsalary === undefined)
-            return;
+        if ($scope.LastName === "" || $scope.LastName === null || $scope.LastName === undefined) {
+            showAlert("Họ và tên đệm không được bỏ trống"); return;
+        }
+        if ($scope.FirstName === "" || $scope.FirstName === null || $scope.FirstName === undefined) {
+            showAlert("Tên không được bỏ trống"); return;
+        }
+        if ($scope.Gender === "" || $scope.Gender === null || $scope.Gender === undefined) {
+            showAlert("Giới tính không được bỏ trống"); return;
+        }
+        if ($scope.Position === "" || $scope.Position === null || $scope.Position === undefined) {
+            showAlert("Chức vụ không được bỏ trống"); return;
+        }
+        if ($scope.IdentityId === "" || $scope.IdentityId === null || $scope.IdentityId === undefined) {
+            showAlert("CMND/Passport không đúng"); return;
+        }
+        if ($scope.IdIssuedDate === "" || $scope.IdIssuedDate === null || $scope.IdIssuedDate === undefined) {
+            showAlert("Ngày cấp không được bỏ trống"); return;
+        }
+        if ($scope.IdIssuedBy === "" || $scope.IdIssuedBy === null || $scope.IdIssuedBy === undefined) {
+            showAlert("Nơi cấp không được bỏ trống"); return;
+        }
+        if ($scope.DOB === "" || $scope.DOB === null || $scope.DOB === undefined) {
+            showAlert("Ngày sinh không được bỏ trống"); return;
+        }
+        var date1 = new Date()
+        if ($scope.DOB > date1.setYear(date1.getYear() - 18)) {
+            showAlert("Độ tuổi không phù hợp"); return;
+        }
+        if ($scope.school === "" || $scope.school === null || $scope.school === undefined) {
+            showAlert("Đơn vị công tác không được bỏ trống"); return;
+        }
         $scope.data = {
             LastName: $scope.LastName,
             FirstName: $scope.FirstName,

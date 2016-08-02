@@ -40,14 +40,14 @@ app.factory("finacialSrv", function ($http) {
     $http.defaults.transformRequest = [function (data) {
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-    var baseService = 'http://localhost:4284/api/App';
+    var baseService = 'http://devsale.thessc.com.vn/api/App';
     var stepone = angular.fromJson(window.localStorage['stepone'] || '[]');
     function stepOnePersist() {
         window.localStorage['stepone'] = angular.toJson(stepone);
     }
-    var stepdtwo = angular.fromJson(window.localStorage['stepdtwo'] || '[]');
+    var steptwo = angular.fromJson(window.localStorage['steptwo'] || '[]');
     function stepTwoPersist() {
-        window.localStorage['steptwo'] = angular.toJson(stepdtwo);
+        window.localStorage['steptwo'] = angular.toJson(steptwo);
     }
     return {
         getPositions: function () {
@@ -55,6 +55,9 @@ app.factory("finacialSrv", function ($http) {
         },
         getListSchools: function () {
             return $http.get(baseService + '/GetSchoolList');
+        },
+        getSchoolName: function (schoolId) {
+            return $http.get(baseService + '/GetSchoolName?schoolId=' + schoolId);
         },
         getListProvinces: function () {
             return $http.get(baseService + '/GetProvinceList');
@@ -79,15 +82,15 @@ app.factory("finacialSrv", function ($http) {
             }
         },
         getStepTwo: function () {
-            return stepdtwo;
+            return steptwo;
         },
         saveStepTwo: function (stepTwoData) {
-            stepdtwo.push(stepTwoData);
+            steptwo.push(stepTwoData);
             stepTwoPersist();
         },
         clearDataStepTwo: function () {
-            if (stepdtwo != null && stepdtwo != undefined && stepdtwo.length != 0) {
-                stepdtwo.splice(0, 1);
+            if (steptwo != null && steptwo != undefined && steptwo.length != 0) {
+                steptwo.splice(0, 1);
                 stepTwoPersist();
             }
         },

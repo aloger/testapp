@@ -1,17 +1,17 @@
+
 <ion-view>
     <div class="bar bar-subheader">
         <h2 class="title">Cập nhật thông tin</h2>
     </div>
     <ion-content ng-controller="stepTwoCtrl" class="has-header has-subheader">
         <form name="myForm" novalidate>
-
-            <div class="range range-assertive">
-                <i class="icon ion-ios7-sunny-outline"></i>
-                <input type="range" min="{{package.MinValue}}" step="1000000" max="{{package.MaxValue}}" value="" ng-model="LoanAmount"> {{LoanAmount}}/{{package.MaxValue}}
-                <i class="icon ion-ios7-sunny"></i>
-            </div>
-
             <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Mức vay:</span>
+                <div class="range range-assertive">
+                    <input type="range" min="{{package.MinValue}}" step="1000000" max="{{package.MaxValue}}" value="" ng-model="LoanAmount">{{formatCurrency(LoanAmount)}} Đ
+                </div>
+                </label>
                 <label class="item item-input item-stacked-label">
                 <span class="input-label">Địa chỉ thường trú:</span>
                 <input type="text" name="ResidentAddress" ng-model="ResidentAddress" placeholder="Ấp abc" check-Residentaddress/>
@@ -69,7 +69,7 @@
              </label>
                 <label class="item item-input item-label">
                 <div class="input-label">Số người phụ thuộc tài chính:</div>                
-                <input type="text" placeholder="3" ng-model="NumberDepent" name="NumberDepent" check-Numberdepent/>
+                <input type="text" placeholder="" ng-model="NumberDepent" name="NumberDepent" check-Numberdepent/>
              </label>
                 <label class="item item-input item-select">
                 <div class="input-label">Loại nhà sở hữu:</div>                
@@ -82,13 +82,13 @@
                 <input type="text" placeholder="Bánh bèo" ng-model="SecrectQuestion" name="SecrectQuestion" check-Secrectquestion/>
              </label>
                 <label class="item item-input item-select">
-                <div class="input-label">Loại đăng ký bảo hiểm:</div>                
+                <div class="input-label">Hình thức nhận lương:</div>                
                 <select ng-model="Formofwage">
                     <option ng-repeat="x in formofwage" value="{{x.Id}}">{{x.Name}}</option>
                 </select>
              </label>
                 <label class="item item-input item-select">
-                <div class="input-label">Hình thức nhận lương:</div>                
+                <div class="input-label">Loại đăng ký bảo hiểm:</div>                
                 <select ng-model="Insurrance">
                     <option ng-repeat="x in insurrance" value="{{x.Id}}">{{x.Name}}</option>
                 </select>

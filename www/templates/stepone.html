@@ -15,19 +15,20 @@
             </label>
                 <label class="item item-input item-select">
                 <span class="input-label">Giới tính:</span>           
-                <select ng-model="Gender">
+                <select ng-model="Gender" ng-required="true">
                     <option ng-repeat="x in gender" ng-app="" value="{{x.Id}}">{{x.Name}}</option>
                 </select>
              </label>
                 <label class="item item-input item-select">
                 <span class="input-label">Chức vụ:</span>           
-                <select ng-model="Position">
+                <select ng-model="Position" ng-required="true">
+                    <option ng-app="" value="">Chọn chức vụ</option>
                     <option ng-repeat="position in positions" ng-app="" value="{{position.Id}}">{{position.Name}}</option>
                 </select>
              </label>
                 <label class="item item-input item-stacked-label">
                 <span class="input-label">CMND/Passport:</span>
-                <input type="text" name="IdentityId" ng-model="IdentityId"  placeholder="385537271" ng-required="true" ng-maxlength="12" check-Cmnd/>
+                <input type="text" name="IdentityId" ng-model="IdentityId"  placeholder="CMND hoặc Passport" ng-required="true" ng-minlength="9" ng-maxlength="12" check-Cmnd/>
             </label>
                 <label class="item item-input item-stacked-label" ion-datetime-picker date only-valid="{'before': 'today', 'inclusive': true}"
                     ng-model='IdIssuedDate'>
@@ -36,16 +37,15 @@
             </label>
                 <label class="item item-input item-stacked-label">
                 <span class="input-label">Nơi cấp:</span>
-                <input type="text" name="IdIssuedBy" ng-model="IdIssuedBy" placeholder="CA.Huyện" ng-required="true" ng-maxlength="250" check-Idissuedby/>
+                <input type="text" name="IdIssuedBy" ng-model="IdIssuedBy" placeholder="CA.Quận/Huyện" ng-required="true" ng-maxlength="250" check-Idissuedby/>
             </label>
-                <ul class="error-msgs" ng-messages="myForm.DOB.$error">
-                    <label class="item item-input item-stacked-label" ion-datetime-picker only-valid="{'before': 'today', 'inclusive': true}"
-                        date ng-model='DOB'>
+                <label class="item item-input item-stacked-label" ion-datetime-picker only-valid="{'before': 'today', 'inclusive': true}"
+                    date ng-model='DOB'>
                 <span class="input-label">Ngày sinh:</span>
                 <p class="date">{{DOB| date: "dd-MM-yyyy"}}</p>         
             </label>
 
-                    <label class="item item-input item-stacked-label">
+                <label class="item item-input item-stacked-label">
                 <span class="input-label">Đơn vị công tác:</span>
                 <input  ion-autocomplete type="text" placeholder="Nhập vào tên đơn vị công tác" 
                     readonly="readonly" class="ion-autocomplete" autocomplete="off" 
@@ -58,9 +58,10 @@
                     items-clicked-method="itemsClicked(callback)"
                     items-removed-method="itemsRemoved(callback)"
                     ng-required="true"
+                    placeholder="Tên trường công tác"
                     check-School/>
             </label>
-                    <label class="item item-input item-select">
+                <label class="item item-input item-select">
                 <span class="input-label">Thu nhập:</span>
                 <select name="Incomes" ng-model="aboutsalary">
                     <option value="">Chọn mức lương...</option>
@@ -78,7 +79,7 @@
             </div>
             <div class="padding">
                 <ul class="error-msgs" ng-messages="myForm.IdentityId.$error">
-                    <li ng-message="numberValidator">* CMND phải là số</li>
+                    <li ng-message="numberValidator">* CMND không đúng</li>
                     <li ng-message="cmndValidator">* CMND có 9 hoặc 12 số</li>
                 </ul>
                 <ul class="error-msgs" ng-messages="myForm.LastName.$error">

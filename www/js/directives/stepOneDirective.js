@@ -4,8 +4,7 @@ app.directive('checkCmnd', function () {
         require: 'ngModel',
         link: function (scope, element, attr, ctrl) {
             function customValidator(ngModelValue) {
-
-                if (/[0-9]/.test(ngModelValue) && ngModelValue.length != 0) {
+                if (/[0-9a-zA-Z]/.test(ngModelValue) && ngModelValue.length != 0) {
                     ctrl.$setValidity('numberValidator', true);
                 } else {
                     ctrl.$setValidity('numberValidator', false);
@@ -28,7 +27,6 @@ app.directive('checkLastname', function () {
         require: 'ngModel',
         link: function (scope, element, attr, ctrl) {
             function customValidator(ngModelValue) {
-
                 if (ngModelValue.length === 0) {
                     ctrl.$setValidity('lastnamerequired', false);
                 } else {

@@ -1,5 +1,4 @@
-app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
-
+app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, finacialSrv) {
     var stepOneData = finacialSrv.getStepOne();
     finacialSrv.getListProvinces().then(function (response) {
         $scope.listProvince = response.data.ResponseData
@@ -15,7 +14,12 @@ app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
     } else {
         $scope.package = [];
     }
-
+    finacialSrv.getPositions().then(function (response) {
+        $scope.positions = response.data.ResponseData
+    })
+    finacialSrv.getSchoolName(stepOneData[0].SchoolId).then(function (response) {
+        $scope.schoolNameTmp = response.data.ResponseData[0];
+    })
     $scope.getDistrict = function (provinceId) {
         if (provinceId === null || provinceId == undefined || provinceId === "") {
             $scope.districts = [{
@@ -140,51 +144,120 @@ app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
                 'Name': 'Không tham gia bảo hiểm'
             }
         ];
+    var showAlert = function (messenger) {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Thông báo',
+            template: messenger
+        });
+        alertPopup.then(function (res) {
+        });
+    };
     $scope.completeRegister = function () {
         finacialSrv.clearDataStepTwo();
-        // if ($scope.ResidentAddress === "" || $scope.ResidentAddress === null || $scope.ResidentAddress === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.Province === "" || $scope.Province === null || $scope.Province === undefined)
-        //     $state.go('steptwo')
-        // if ($scope.District === "" || $scope.District === null || $scope.District === undefined)
-        //     $state.go('steptwo')
-        // if ($scope.CurrentAddress === "" || $scope.CurrentAddress === null || $scope.CurrentAddress === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.DistrictCurrent === "" || $scope.DistrictCurrent === null || $scope.DistrictCurrent === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.ProvinceCurrent === "" || $scope.ProvinceCurrent === null || $scope.ProvinceCurrent === undefined)
-        //     $state.go('steptwo')
-        // if ($scope.YearAddress === "" || $scope.YearAddress === null || $scope.YearAddress === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.MonthAddress === "" || $scope.MonthAddress === null || $scope.MonthAddress === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.Phone === "" || $scope.Phone === null || $scope.Phone === undefined)
-        //     $state.go('steptwo')
-        // if ($scope.Email === "" || $scope.Email === null || $scope.Email === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.MaritalStatus === "" || $scope.MaritalStatus === null || $scope.MaritalStatus === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.NumberDepent === "" || $scope.NumberDepent === null || $scope.NumberDepent === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.HomeStatus === "" || $scope.HomeStatus === null || $scope.HomeStatus === undefined)
-        //     $state.go('steptwo')
-        // if ($scope.SecrectQuestion === "" || $scope.SecrectQuestion === null || $scope.SecrectQuestion === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.Formofwage === "" || $scope.Formofwage === null || $scope.Formofwage === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.Insurrance === "" || $scope.Insurrance === null || $scope.Insurrance === undefined)
-        //     $state.go('steptwo')
-        // if ($scope.Contract === "" || $scope.Contract === null || $scope.Contract === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.YearSeniority === "" || $scope.YearSeniority === null || $scope.YearSeniority === undefined)
-        //    $state.go('steptwo')
-        // if ($scope.MonthSeniority === "" || $scope.MonthSeniority === null || $scope.MonthSeniority === undefined)
-        //     $state.go('steptwo')
 
+        if ($scope.LoanAmount === "" || $scope.LoanAmount === null || $scope.LoanAmount === undefined || $scope.LoanAmount < 1000000) {
+            showAlert("Bạn phải chọn mức vay");
+            return;
+        }
+        if ($scope.ResidentAddress === "" || $scope.ResidentAddress === null || $scope.ResidentAddress === undefined) {
+            showAlert("Địa chỉ thường trú không được bỏ trống");
+            return;
+        };
+        if ($scope.Province === "" || $scope.Province === null || $scope.Province === undefined) {
+            showAlert("Tỉnh/Thành phố thường trú không được bỏ trống");
+            return;
+        }
+        if ($scope.District === "" || $scope.District === null || $scope.District === undefined) {
+            showAlert("Quận/Huyện thường trú không được bỏ trống");
+            return;
+        }
+        if ($scope.CurrentAddress === "" || $scope.CurrentAddress === null || $scope.CurrentAddress === undefined) {
+            showAlert("Địa chỉ hiện tại không được bỏ trống");
+            return;
+        }
+        if ($scope.ProvinceCurrent === "" || $scope.ProvinceCurrent === null || $scope.ProvinceCurrent === undefined) {
+            showAlert("Tỉnh/Thành phố hiện tại không được bỏ trống");
+            return;
+        }
+        if ($scope.DistrictCurrent === "" || $scope.DistrictCurrent === null || $scope.DistrictCurrent === undefined) {
+            showAlert("Quận/Huyện hiện tại không được bỏ trống");
+            return;
+        }
+        if ($scope.Phone === "" || $scope.Phone === null || $scope.Phone === undefined) {
+            showAlert("Số điện thoại không được bỏ trống");
+            return;
+        }
+        if ($scope.Email === "" || $scope.Email === null || $scope.Email === undefined) {
+            showAlert("Email không được bỏ trống");
+            return;
+        }
+        if ($scope.MaritalStatus === "" || $scope.MaritalStatus === null || $scope.MaritalStatus === undefined) {
+            showAlert("Tình trạng hôn nhân không được bỏ trống");
+            return;
+        }
+        if ($scope.HomeStatus === "" || $scope.HomeStatus === null || $scope.HomeStatus === undefined) {
+            showAlert("Loại nhà sở hữu không được bỏ trống");
+            return;
+        }
+        if ($scope.SecrectQuestion === "" || $scope.SecrectQuestion === null || $scope.SecrectQuestion === undefined) {
+            showAlert("Câu hỏi bảo mật không được bỏ trống");
+            return;
+        }
+        if ($scope.Formofwage === "" || $scope.Formofwage === null || $scope.Formofwage === undefined) {
+            showAlert("Hình thức nhận lương không được bỏ trống");
+            return;
+        }
+        if ($scope.Insurrance === "" || $scope.Insurrance === null || $scope.Insurrance === undefined) {
+            showAlert("Bảo hiểm không được bỏ trống");
+            return;
+        }
+        if ($scope.Contract === "" || $scope.Contract === null || $scope.Contract === undefined) {
+            showAlert("Hợp đồng lao động không được bỏ trống");
+            return;
+        }
+        if ($scope.YearSeniority === "" || $scope.YearSeniority === null || $scope.YearSeniority === undefined) {
+            showAlert("Năm thâm niên không được bỏ trống");
+            return;
+        }
+        if ($scope.MonthSeniority === "" || $scope.MonthSeniority === null || $scope.MonthSeniority === undefined) {
+            showAlert("Tháng thâm niên không được bỏ trống");
+            return;
+        }
+        var stepOneData = finacialSrv.getStepOne();
+        var listDistrict = $scope.listProvince;
+        var ProvinceName = "";
+        angular.forEach(listDistrict, function (value, key) {
+            if ($scope.Province == value.Id) {
+                ProvinceName = value.Name;
+            }
+        });
+        var ProvinceCurrent = "";
+        angular.forEach(listDistrict, function (value, key) {
+            if ($scope.ProvinceCurrent == value.Id) {
+                ProvinceCurrent = value.Name;
+            }
+        });
+
+        var Position = "";
+
+        var id = stepOneData[0].OfficerId;
+        angular.forEach($scope.positions, function (value, key) {
+            if (id == value.Id) {
+                Position = value.Name;
+            }
+        });
+        var SchoolName = "";
+
+        SchoolName = $scope.schoolNameTmp;
         $scope.data = {
             ResidentAddress: $scope.ResidentAddress + ' ' + $scope.District + ' ' + $scope.Province,
+            TempResideantAddress: $scope.ResidentAddress + ' ' + $scope.District + ' ' + ProvinceName,
+            DOB: stepOneData[0].DOB.getDate() + "/" + stepOneData[0].DOB.getMonth() + "/" + stepOneData[0].DOB.getFullYear(),
+            TempCurrentAddress: $scope.CurrentAddress + ' ' + $scope.DistrictCurrent + ' ' + ProvinceCurrent,
+            TempSchool: SchoolName,
+            IdIssuedDate: stepOneData[0].IdIssuedDate.getDate() + "/" + stepOneData[0].IdIssuedDate.getMonth() + "/" + stepOneData[0].IdIssuedDate.getFullYear(),
             CurrentAddress: $scope.CurrentAddress + ' ' + $scope.DistrictCurrent + ' ' + $scope.ProvinceCurrent,
-
+            TempPosition: Position,
             YearAddress: $scope.YearAddress,
             MonthAddress: $scope.MonthAddress,
             Phone: $scope.Phone,
@@ -236,9 +309,27 @@ app.controller('stepTwoCtrl', function ($http, $scope, $state, finacialSrv) {
             ServiceInternet: $scope.data.ServiceInternet,
             ServiceMobile: $scope.data.ServiceMobile
         }
-        finacialSrv.saveStepTwo($scope.data);
 
-        finacialSrv.save(data);
-        // $state.go('complete')
+
+        finacialSrv.save(data).then(function (response) {
+            if (response.data.ResponseCode == 0) {
+                finacialSrv.saveStepTwo($scope.data);
+                $state.go('complete')
+            }
+        });
+
     };
+    $scope.formatCurrency = function (nStr) {
+        if(nStr===undefined||nStr===""||nStr.length==0)
+            return 0;
+        nStr += '';
+        var x = nStr.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
 });
