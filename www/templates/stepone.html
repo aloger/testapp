@@ -37,15 +37,15 @@
                 <input type="text " name="IdentityId " ng-model="IdentityId "  placeholder="CMND hoặc hộ chiếu
             " ng-required="true " check-Cmnd/>
             </label>
-                <label class="item item-input item-stacked-label " ion-datetime-picker date only-valid="{ 'before':
+                <label class="item item-input item-stacked-label " ion-datetime-picker  date only-valid="{ 'before':
             'today', 'inclusive': true} "
                     ng-model='IdIssuedDate'>
                 <span class="input-label "><span class="required ">* </span>Ngày cấp:</span>
-                <p class="date ">{{IdIssuedDate| date: "dd-MM-yyyy "}}</p>
+                <p  class="date " >{{IdIssuedDate| date: "dd-MM-yyyy "}}</p>
             </label>
                 <label class="item item-input item-stacked-label ">
                 <span class="input-label "><span class="required ">* </span>Nơi cấp:</span>
-                <input type="text " name="IdIssuedBy " ng-model="IdIssuedBy " placeholder="CA.Quận/Huyện
+                <input type="text " name="IdIssuedBy " ng-model="IdIssuedBy " placeholder="CA.Tỉnh/Thành phố
             " ng-required="true " ng-maxlength="250 " check-Idissuedby/>
             </label>
                 <label class="item item-input item-stacked-label " ion-datetime-picker only-valid="{ 'before': 'today',
@@ -71,6 +71,8 @@
                     ng-required="true "
                     placeholder="Tên trường công tác "
                     check-School
+                    select-items-label="Chọn trường..."
+                    selected-items-label="Chọn:"
                     style="display: block;"/>
             </label>
 

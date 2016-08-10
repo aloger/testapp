@@ -5,13 +5,6 @@ app.factory("finacialSrv", function ($http) {
    * @param {Object} obj
    * @return {String}
    */
-    var files = [];
-    function pushfile(file) {
-        files.push(file);
-    }
-    function getfile() {
-        return file;
-    }
 
 
     var param = function (obj) {
@@ -49,8 +42,7 @@ app.factory("finacialSrv", function ($http) {
     $http.defaults.transformRequest = [function (data) {
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-    // var baseService = 'http://localhost:4841/api/App';
-    var baseService = 'http://devsale.thessc.com.vn/api/App';
+    var baseService = 'http://devtcgv.greentech.net.vn/api/App';
 
     var stepone = angular.fromJson(window.localStorage['stepone'] || '[]');
     function stepOnePersist() {

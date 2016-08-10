@@ -192,6 +192,7 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             showAlert("Quận/Huyện thường trú không được bỏ trống");
             return;
         }
+
         if ($scope.CurrentAddress === "" || $scope.CurrentAddress === null || $scope.CurrentAddress === undefined) {
             showAlert("Địa chỉ hiện tại không được bỏ trống");
             return;
@@ -204,7 +205,16 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             showAlert("Quận/Huyện hiện tại không được bỏ trống");
             return;
         }
-        if ($scope.Phone === "" || $scope.Phone === null || $scope.Phone === undefined || !(/(\+84|0)\d{9,10}/.test($scope.Phone))) {
+        if (0 > $scope.MonthAddress || $scope.MonthAddress > 11) {
+            showAlert("Tháng cư trú không được lớn hơn 11");
+            return;
+        }
+        var stepOneData = finacialSrv.getStepOne();
+        if ($scope.YearAddress > ((new Date().getFullYear()) - stepOneData[0].DOB.getFullYear())) {
+            showAlert("Thời gian cư trú không được lớn hơn số tuổi");
+            return;
+        }
+        if ($scope.Phone === "" || $scope.Phone === null || $scope.Phone === undefined || !(/^(((\+|0)\d{2,3}\s?\d{7})|((\+|0)\d{12,14}))|(\(?\d{2,3}\)?\s?\d{7,9})$/.test($scope.Phone))) {
             showAlert("Số điện thoại không đúng");
             return;
         }
@@ -240,29 +250,33 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             showAlert("Năm thâm niên không đúng");
             return;
         }
-        if ($scope.MonthSeniority === "" || $scope.MonthSeniority === null || $scope.MonthSeniority === undefined || !(/^[0-9]+$/.test($scope.MonthSeniority))) {
-            showAlert("Tháng thâm niên không được bỏ trống");
+        if ($scope.MonthSeniority === "" || $scope.MonthSeniority === null || $scope.MonthSeniority === undefined || 0 > $scope.MonthSeniority || $scope.MonthSeniority > 11 || !(/^[0-9]+$/.test($scope.MonthSeniority))) {
+            showAlert("Tháng thâm niên không đúng");
+            return;
+        }
+        if ($scope.YearSeniority === "" || $scope.YearSeniority === null || $scope.YearSeniority === undefined || !(/^[0-9]+$/.test($scope.YearSeniority))) {
+            showAlert("Năm thâm niên không đúng");
+            return;
+        }
+        if ($scope.YearSeniority > ((new Date().getFullYear()) - stepOneData[0].DOB.getFullYear())) {
+            showAlert("Thâm niên không được lớn hơn số tuổi");
             return;
         }
 
-        if ($scope.MonthSeniority === "" || $scope.MonthSeniority === null || $scope.MonthSeniority === undefined || !(/^[0-9]+$/.test($scope.MonthSeniority))) {
-            showAlert("Tháng thâm niên không được bỏ trống");
-            return;
-        }
-        var validFormats = ['jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'];
-        if ($scope.fileone !== "" && $scope.fileone !== null && $scope.fileone !== undefined) {
+        var validFormats = ['jpg', 'jpge', 'png', 'gif', 'pdf', 'doc', 'docx'];
+        if (($scope.fileone !== "" && $scope.fileone !== null && $scope.fileone !== undefined) && $scope.fileone.length !== 0) {
             if ((validFormats.indexOf(/[^.]+$/.exec($scope.fileone[0].name)[0]) === -1)) {
                 showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'");
                 return;
             }
         }
-        if (($scope.filetwo !== "" && $scope.filetwo !== null && $scope.filetwo !== undefined)) {
+        if (($scope.filetwo !== "" && $scope.filetwo !== null && $scope.filetwo !== undefined) && $scope.filetwo.length !== 0) {
             if (validFormats.indexOf(/[^.]+$/.exec($scope.filetwo[0].name)[0]) === -1) {
                 showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'");
                 return;
             }
         }
-        if (($scope.filethree !== "" && $scope.filethree !== null && $scope.filethree !== undefined)) {
+        if (($scope.filethree !== "" && $scope.filethree !== null && $scope.filethree !== undefined) && $scope.filethree.length !== 0) {
             if (validFormats.indexOf(/[^.]+$/.exec($scope.filethree[0].name)[0]) === -1) {
                 showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'");
                 return;
@@ -270,7 +284,7 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
         }
 
 
-        var stepOneData = finacialSrv.getStepOne();
+
         var listDistrict = $scope.listProvince;
         var ProvinceName = "";
         angular.forEach(listDistrict, function (value, key) {
@@ -298,9 +312,9 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
         SchoolName = $scope.schoolNameTmp;
         $scope.data = {
             ResidentAddress: $scope.ResidentAddress + ' ' + $scope.District + ' ' + $scope.Province,
-            TempResideantAddress: $scope.ResidentAddress + ' ' + $scope.District + ' ' + ProvinceName,
+            TempResideantAddress: $scope.ResidentAddress + ', ' + $scope.District + ', ' + ProvinceName,
             DOB: stepOneData[0].DOB.getDate() + "/" + stepOneData[0].DOB.getMonth() + "/" + stepOneData[0].DOB.getFullYear(),
-            TempCurrentAddress: $scope.CurrentAddress + ' ' + $scope.DistrictCurrent + ' ' + ProvinceCurrent,
+            TempCurrentAddress: $scope.CurrentAddress + ', ' + $scope.DistrictCurrent + ', ' + ProvinceCurrent,
             TempSchool: SchoolName,
             IdIssuedDate: stepOneData[0].IdIssuedDate.getDate() + "/" + stepOneData[0].IdIssuedDate.getMonth() + "/" + stepOneData[0].IdIssuedDate.getFullYear(),
             CurrentAddress: $scope.CurrentAddress + ' ' + $scope.DistrictCurrent + ' ' + $scope.ProvinceCurrent,
@@ -363,7 +377,7 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
         }
 
         //Upload File
-        if ($scope.fileone !== "" && $scope.fileone !== null && $scope.fileone !== undefined) {
+        if (($scope.fileone !== "" && $scope.fileone !== null && $scope.fileone !== undefined) && $scope.fileone.length !== 0) {
             var name = new Date();
             var fileone = "" + name.getFullYear() + name.getMonth().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getHours() + name.getMinutes() + name.getMilliseconds();
             var file = $scope.fileone;
@@ -374,7 +388,7 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             else
                 data.EnclosedFile = "/Uploads/EnclosedFiles/" + fileone;
         }
-        if ($scope.filetwo !== "" && $scope.filetwo !== null && $scope.filetwo !== undefined) {
+        if (($scope.filetwo !== "" && $scope.filetwo !== null && $scope.filetwo !== undefined) && $scope.filetwo.length !== 0) {
             var name = new Date();
             var filetwo = "" + name.getFullYear() + name.getMonth().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getHours() + name.getMinutes() + name.getMilliseconds();
             var file = $scope.filetwo;
@@ -385,7 +399,7 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             else
                 data.Citizenship = "/Uploads/EnclosedFiles/" + filetwo;
         }
-        if ($scope.filethree !== "" && $scope.filethree !== null && $scope.filethree !== undefined) {
+        if (($scope.filethree !== "" && $scope.filethree !== null && $scope.filethree !== undefined) && $scope.filethree.length !== 0) {
             var name = new Date();
             var filethree = "" + name.getFullYear() + name.getMonth().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getHours() + name.getMinutes() + name.getMilliseconds();
             var file = $scope.filethree;
