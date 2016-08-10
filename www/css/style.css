@@ -3,10 +3,3 @@
 input { width: 90%; margin: 0 auto; padding: 5px; margin: 5px; }
 .error-msgs li { padding: 5px; color: red;  }
 
-div.controls{
-  margin-bottom:12px;
-  border: 1px dotted ;
-  padding:25px 20px;
-  position:relative;
-  margin-bottom:20px;
-}

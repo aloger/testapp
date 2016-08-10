@@ -1,4 +1,4 @@
-app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, finacialSrv) {
+app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, finacialSrv, $ionicLoading, $ionicHistory) {
     var stepOneData = finacialSrv.getStepOne();
     finacialSrv.getListProvinces().then(function (response) {
         $scope.listProvince = response.data.ResponseData
@@ -23,16 +23,16 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
     $scope.getDistrict = function (provinceId) {
         if (provinceId === null || provinceId == undefined || provinceId === "") {
             $scope.districts = [{
-                "Id": undefined,
-                "Name": "Chọn tỉnh thành phố"
+                'Id': '',
+                "Name": "Chọn quận huyện"
             }];
         } else {
             finacialSrv.getDistrict(provinceId).then(function (response) {
                 $scope.districts = response.data.ResponseData;
             }, function (error) {
                 $scope.districts = [{
-                    "Id": undefined,
-                    "Name": "Chọn tỉnh thành phố"
+                    'Id': '',
+                    "Name": "Chọn quận huyện"
                 }];
             })
         }
@@ -40,22 +40,26 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
     $scope.getDistrictcurrent = function (provinceId) {
         if (provinceId === null || provinceId == undefined || provinceId === "") {
             $scope.districtscurrent = [{
-                "Id": undefined,
-                "Name": "Chọn tỉnh thành phố"
+                'Id': '',
+                "Name": "Chọn quận huyện"
             }];
         } else {
             finacialSrv.getDistrict(provinceId).then(function (response) {
                 $scope.districtscurrent = response.data.ResponseData;
             }, function (error) {
                 $scope.districtscurrent = [{
-                    "Id": undefined,
-                    "Name": "Chọn tỉnh thành phố"
+                    'Id': '',
+                    "Name": "Chọn quận huyện"
                 }];
             })
         }
     }
     $scope.listMaritalStatus =
         [
+            {
+                'Id': '',
+                'Name': 'Chọn tình trạng hôn nhân'
+            },
             {
                 'Id': '0',
                 'Name': 'Độc thân'
@@ -70,6 +74,10 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             }];
     $scope.listHome =
         [
+            {
+                'Id': '',
+                'Name': 'Chọn loại nhà sở hữu'
+            },
             {
                 'Id': '0',
                 'Name': 'Nhà riêng'
@@ -94,6 +102,10 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
     $scope.laborcontracts =
         [
             {
+                'Id': '',
+                'Name': 'Chọn loại hợp đồng'
+            },
+            {
                 'Id': '0',
                 'Name': 'Hợp đồng dưới 1 năm'
             },
@@ -113,6 +125,10 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
     $scope.formofwage =
         [
             {
+                'Id': '',
+                'Name': 'Chọn hình thức nhận lương'
+            },
+            {
                 'Id': '0',
                 'Name': 'Tiền mặt'
             },
@@ -127,6 +143,10 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
         ];
     $scope.insurrance =
         [
+            {
+                'Id': '',
+                'Name': 'Chọn loại đăng ký bảo hiểm'
+            },
             {
                 'Id': '0',
                 'Name': 'Bảo hiểm tai nạn'
@@ -145,6 +165,7 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             }
         ];
     var showAlert = function (messenger) {
+        finacialSrv.hideLoading($ionicLoading);
         var alertPopup = $ionicPopup.alert({
             title: 'Thông báo',
             template: messenger
@@ -153,8 +174,8 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
         });
     };
     $scope.completeRegister = function () {
+        finacialSrv.showLoading($ionicLoading);
         finacialSrv.clearDataStepTwo();
-
         if ($scope.LoanAmount === "" || $scope.LoanAmount === null || $scope.LoanAmount === undefined || $scope.LoanAmount < 1000000) {
             showAlert("Bạn phải chọn mức vay");
             return;
@@ -183,12 +204,12 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             showAlert("Quận/Huyện hiện tại không được bỏ trống");
             return;
         }
-        if ($scope.Phone === "" || $scope.Phone === null || $scope.Phone === undefined) {
-            showAlert("Số điện thoại không được bỏ trống");
+        if ($scope.Phone === "" || $scope.Phone === null || $scope.Phone === undefined || !(/(\+84|0)\d{9,10}/.test($scope.Phone))) {
+            showAlert("Số điện thoại không đúng");
             return;
         }
-        if ($scope.Email === "" || $scope.Email === null || $scope.Email === undefined) {
-            showAlert("Email không được bỏ trống");
+        if ($scope.Email === "" || $scope.Email === null || $scope.Email === undefined || !(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i.test($scope.Email))) {
+            showAlert("Email không đúng");
             return;
         }
         if ($scope.MaritalStatus === "" || $scope.MaritalStatus === null || $scope.MaritalStatus === undefined) {
@@ -199,8 +220,8 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             showAlert("Loại nhà sở hữu không được bỏ trống");
             return;
         }
-        if ($scope.SecrectQuestion === "" || $scope.SecrectQuestion === null || $scope.SecrectQuestion === undefined) {
-            showAlert("Câu hỏi bảo mật không được bỏ trống");
+        if ($scope.SecrectQuestion === "" || $scope.SecrectQuestion === null || $scope.SecrectQuestion === undefined || !(/^[^~@#$%^&*+=$<>]*$/.test($scope.SecrectQuestion))) {
+            showAlert("Câu hỏi bảo mật không đúng");
             return;
         }
         if ($scope.Formofwage === "" || $scope.Formofwage === null || $scope.Formofwage === undefined) {
@@ -215,14 +236,40 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             showAlert("Hợp đồng lao động không được bỏ trống");
             return;
         }
-        if ($scope.YearSeniority === "" || $scope.YearSeniority === null || $scope.YearSeniority === undefined) {
-            showAlert("Năm thâm niên không được bỏ trống");
+        if ($scope.YearSeniority === "" || $scope.YearSeniority === null || $scope.YearSeniority === undefined || !(/^[0-9]+$/.test($scope.YearSeniority))) {
+            showAlert("Năm thâm niên không đúng");
             return;
         }
-        if ($scope.MonthSeniority === "" || $scope.MonthSeniority === null || $scope.MonthSeniority === undefined) {
+        if ($scope.MonthSeniority === "" || $scope.MonthSeniority === null || $scope.MonthSeniority === undefined || !(/^[0-9]+$/.test($scope.MonthSeniority))) {
             showAlert("Tháng thâm niên không được bỏ trống");
             return;
         }
+
+        if ($scope.MonthSeniority === "" || $scope.MonthSeniority === null || $scope.MonthSeniority === undefined || !(/^[0-9]+$/.test($scope.MonthSeniority))) {
+            showAlert("Tháng thâm niên không được bỏ trống");
+            return;
+        }
+        var validFormats = ['jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'];
+        if ($scope.fileone !== "" && $scope.fileone !== null && $scope.fileone !== undefined) {
+            if ((validFormats.indexOf(/[^.]+$/.exec($scope.fileone[0].name)[0]) === -1)) {
+                showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'");
+                return;
+            }
+        }
+        if (($scope.filetwo !== "" && $scope.filetwo !== null && $scope.filetwo !== undefined)) {
+            if (validFormats.indexOf(/[^.]+$/.exec($scope.filetwo[0].name)[0]) === -1) {
+                showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'");
+                return;
+            }
+        }
+        if (($scope.filethree !== "" && $scope.filethree !== null && $scope.filethree !== undefined)) {
+            if (validFormats.indexOf(/[^.]+$/.exec($scope.filethree[0].name)[0]) === -1) {
+                showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'");
+                return;
+            }
+        }
+
+
         var stepOneData = finacialSrv.getStepOne();
         var listDistrict = $scope.listProvince;
         var ProvinceName = "";
@@ -276,6 +323,8 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             ServiceInternet: $scope.BIDVOnline,
             ServiceMobile: $scope.BIDVMobile
         }
+
+
         var data = {
             LastName: stepOneData[0].LastName,
             FirstName: stepOneData[0].FirstName,
@@ -307,20 +356,57 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             YearSeniority: $scope.data.YearSeniority,
             MonthSeniority: $scope.data.MonthSeniority,
             ServiceInternet: $scope.data.ServiceInternet,
-            ServiceMobile: $scope.data.ServiceMobile
+            ServiceMobile: $scope.data.ServiceMobile,
+            EnclosedFile: "",
+            Citizenship: "",
+            RefCitizenship: ""
         }
 
+        //Upload File
+        if ($scope.fileone !== "" && $scope.fileone !== null && $scope.fileone !== undefined) {
+            var name = new Date();
+            var fileone = "" + name.getFullYear() + name.getMonth().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getHours() + name.getMinutes() + name.getMilliseconds();
+            var file = $scope.fileone;
+            fileone = fileone + "." + /[^.]+$/.exec(file[0].name);
+            finacialSrv.uploadFileToUrl(file, fileone);
+            if (/[^.]+$/.exec(file.name) == "doc" || /[^.]+$/.exec(file.name) == "pdf")
+                data.EnclosedFile = "/Uploads/PDF/" + fileone;
+            else
+                data.EnclosedFile = "/Uploads/EnclosedFiles/" + fileone;
+        }
+        if ($scope.filetwo !== "" && $scope.filetwo !== null && $scope.filetwo !== undefined) {
+            var name = new Date();
+            var filetwo = "" + name.getFullYear() + name.getMonth().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getHours() + name.getMinutes() + name.getMilliseconds();
+            var file = $scope.filetwo;
+            filetwo = filetwo + "." + /[^.]+$/.exec(file[0].name);
+            finacialSrv.uploadFileToUrl(file, filetwo);
+            if (/[^.]+$/.exec(file.name) == "doc" || /[^.]+$/.exec(file.name) == "pdf")
+                data.Citizenship = "/Uploads/PDF/" + filetwo;
+            else
+                data.Citizenship = "/Uploads/EnclosedFiles/" + filetwo;
+        }
+        if ($scope.filethree !== "" && $scope.filethree !== null && $scope.filethree !== undefined) {
+            var name = new Date();
+            var filethree = "" + name.getFullYear() + name.getMonth().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getHours() + name.getMinutes() + name.getMilliseconds();
+            var file = $scope.filethree;
+            filethree = filethree + "." + /[^.]+$/.exec(file[0].name);
+            finacialSrv.uploadFileToUrl(file, filethree);
+            if (/[^.]+$/.exec(file.name) == "doc" || /[^.]+$/.exec(file.name) == "pdf")
+                data.RefCitizenship = "/Uploads/PDF/" + filetwo;
+            else
+                data.RefCitizenship = "/Uploads/EnclosedFiles/" + filethree;
+        }
 
         finacialSrv.save(data).then(function (response) {
             if (response.data.ResponseCode == 0) {
                 finacialSrv.saveStepTwo($scope.data);
+                finacialSrv.hideLoading($ionicLoading);
                 $state.go('complete')
             }
         });
-
     };
     $scope.formatCurrency = function (nStr) {
-        if(nStr===undefined||nStr===""||nStr.length==0)
+        if (nStr === undefined || nStr === "" || nStr.length == 0)
             return 0;
         nStr += '';
         var x = nStr.split('.');
@@ -332,4 +418,26 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
         }
         return x1 + x2;
     }
+    $scope.takePicture = function () {
+        var options = {
+            quality: 75,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            allowEdit: true,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 300,
+            targetHeight: 300,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: false
+        };
+
+        $cordovaCamera.getPicture(options).then(function (imageData) {
+            $scope.imgURI = "data:image/jpeg;base64," + imageData;
+        }, function (err) {
+            // An error occured. Show a message to the user
+        });
+    }
+    $scope.myGoBack = function () {
+        $state.go('stepone')
+    };
 });

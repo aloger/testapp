@@ -5,6 +5,15 @@ app.factory("finacialSrv", function ($http) {
    * @param {Object} obj
    * @return {String}
    */
+    var files = [];
+    function pushfile(file) {
+        files.push(file);
+    }
+    function getfile() {
+        return file;
+    }
+
+
     var param = function (obj) {
         var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
 
@@ -40,7 +49,9 @@ app.factory("finacialSrv", function ($http) {
     $http.defaults.transformRequest = [function (data) {
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
+    // var baseService = 'http://localhost:4841/api/App';
     var baseService = 'http://devsale.thessc.com.vn/api/App';
+
     var stepone = angular.fromJson(window.localStorage['stepone'] || '[]');
     function stepOnePersist() {
         window.localStorage['stepone'] = angular.toJson(stepone);
@@ -68,6 +79,21 @@ app.factory("finacialSrv", function ($http) {
         getPackage: function (officerId) {
             return $http.get(baseService + '/GetPackage?officerId=' + officerId);
         },
+        // uploadImage: function (myFile) {
+        //     upload({
+        //         url: $http.post(baseService + '/UploadImage'),
+        //         data: {
+        //             aFile: myFile, // a jqLite type="file" element, upload() will extract all the files from the input and put them into the FormData object before sending.
+        //         }
+        //     }).then(
+        //         function (response) {
+        //             console.log(response.data); // will output whatever you choose to return from the server on a successful upload
+        //         },
+        //         function (response) {
+        //             console.error(response); //  Will return if status code is above 200 and lower than 300, same as $http
+        //         }
+        //         );
+        // },
         getStepOne: function () {
             return stepone;
         },
@@ -97,6 +123,56 @@ app.factory("finacialSrv", function ($http) {
         save: function (data) {
             return $http.post(baseService + '/Register/',
                 { Data: data });
+        },
+        // save: function (data) {
+        //     return $http.post(baseService + '/UploadImage',{Data:data}, {
+        //         transformRequest: angular.identity
+        //     })
+        //         .success(function () {
+        //         })
+        //         .error(function () {
+        //         });
+        // },
+        showLoading: function ($ionicLoading) {
+            $ionicLoading.show({
+                content: 'Loading',
+                animation: 'fade-in',
+                showBackdrop: true,
+                maxWidth: 200,
+                showDelay: 0
+            });
+        },
+        hideLoading: function ($ionicLoading) {
+            $ionicLoading.hide();
+        },
+        uploadFileToUrl: function (file,name) {
+            var uploadUrl = baseService + '/UploadImage';
+            var data = new FormData();
+            angular.forEach(file, function (value, key) {
+                data.append(key, value);
+            });
+            data.append('name', name);
+            $http.post(uploadUrl, data, {
+                withCredentials: true,
+                headers: { 'Content-Type': undefined },
+                transformRequest: angular.identity
+            });
+                // .success(function () {
+                    
+                // })
+                // .error(function () {
+                // });
+        },
+        fileTransfer: function ($cordovaFileTransfer, filePath) {
+            $cordovaFileTransfer.upload(baseService + '/UploadImage', filePath)
+                .then(function (result) {
+                    // Success!
+                }, function (err) {
+                    // Error
+                }, function (progress) {
+                    // constant progress updates
+                });
         }
     }
-})
+});
+

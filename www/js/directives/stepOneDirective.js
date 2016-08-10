@@ -4,22 +4,53 @@ app.directive('checkCmnd', function () {
         require: 'ngModel',
         link: function (scope, element, attr, ctrl) {
             function customValidator(ngModelValue) {
-                if (/[0-9a-zA-Z]/.test(ngModelValue) && ngModelValue.length != 0) {
+                if ((/(^(([a-zA-Z]?\d{8})|([a-zA-Z]{2}\d{7})|([a-zA-Z]{3}\d{6})|(\d{9})|(\d{12}))$)/.test(ngModelValue) && ngModelValue.length != 0)) {
                     ctrl.$setValidity('numberValidator', true);
                 } else {
                     ctrl.$setValidity('numberValidator', false);
                 }
-                if (ngModelValue.length === 9 || ngModelValue.length === 12) {
-                    ctrl.$setValidity('cmndValidator', true);
-                } else {
-                    ctrl.$setValidity('cmndValidator', false);
-                }
+                // if (ngModelValue.length === 9 || ngModelValue.length === 12) {
+                //     ctrl.$setValidity('cmndValidator', true);
+                // } else {
+                //     ctrl.$setValidity('cmndValidator', false);
+                // }
                 return ngModelValue;
             }
             ctrl.$parsers.push(customValidator);
         }
     };
 })
+
+
+// app.directive('fileModel', ['$parse', 'finacialSrv', function ($parse, finacialSrv) {
+//     return {
+//         restrict: 'A',
+//         link: function (scope, element) {
+//             element.bind('change', function () {
+//                 scope.$apply(function () {
+//                     if (element[0].files != undefined) {
+//                         finacialSrv.pushfile(element[0].files[0]);
+//                     }
+//                 });
+//             });
+//         }
+//     };
+// }]);
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    modelSetter(scope, element[0].files);
+                });
+            });
+        }
+    };
+}]);
 
 app.directive('checkLastname', function () {
     return {

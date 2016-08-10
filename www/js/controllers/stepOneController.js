@@ -1,5 +1,8 @@
 
-app.controller('stepOneCtrl', function ($scope, $state, $ionicPopup, finacialSrv) {
+app.controller('stepOneCtrl', function ($scope, $state, $ionicPopup, finacialSrv, $cordovaFileTransfer) {
+
+
+
     $scope.IdIssuedDate = "";
     $scope.school = "";
 
@@ -49,10 +52,10 @@ app.controller('stepOneCtrl', function ($scope, $state, $ionicPopup, finacialSrv
     //Handle event clicked.
     $scope.GotoStep2 = function () {
         finacialSrv.clearDataStepOne();
-        if ($scope.LastName === "" || $scope.LastName === null || $scope.LastName === undefined) {
-            showAlert("Họ và tên đệm không được bỏ trống"); return;
+        if ($scope.LastName === "" || $scope.LastName === null || $scope.LastName === undefined || !(/^[^~@#$%^&*+=$<>]*$/.test($scope.LastName))) {
+            showAlert("Họ và tên đệm không đúng"); return;
         }
-        if ($scope.FirstName === "" || $scope.FirstName === null || $scope.FirstName === undefined) {
+        if ($scope.FirstName === "" || $scope.FirstName === null || $scope.FirstName === undefined || !(/^[^~@#$%^&*+=$<>]*$/.test($scope.FirstName))) {
             showAlert("Tên không được bỏ trống"); return;
         }
         if ($scope.Gender === "" || $scope.Gender === null || $scope.Gender === undefined) {
@@ -61,20 +64,20 @@ app.controller('stepOneCtrl', function ($scope, $state, $ionicPopup, finacialSrv
         if ($scope.Position === "" || $scope.Position === null || $scope.Position === undefined) {
             showAlert("Chức vụ không được bỏ trống"); return;
         }
-        if ($scope.IdentityId === "" || $scope.IdentityId === null || $scope.IdentityId === undefined) {
+        if ($scope.IdentityId === "" || $scope.IdentityId === null || $scope.IdentityId === undefined || !(/(^(([a-zA-Z]?\d{8})|([a-zA-Z]{2}\d{7})|([a-zA-Z]{3}\d{6})|(\d{9})|(\d{12}))$)/.test($scope.IdentityId) && $scope.IdentityId.length != 0)) {
             showAlert("CMND/Passport không đúng"); return;
         }
         if ($scope.IdIssuedDate === "" || $scope.IdIssuedDate === null || $scope.IdIssuedDate === undefined) {
             showAlert("Ngày cấp không được bỏ trống"); return;
         }
-        if ($scope.IdIssuedBy === "" || $scope.IdIssuedBy === null || $scope.IdIssuedBy === undefined) {
+        if ($scope.IdIssuedBy === "" || $scope.IdIssuedBy === null || $scope.IdIssuedBy === undefined || !(/^[^~@#$%^&*+=$<>]*$/.test($scope.IdIssuedBy))) {
             showAlert("Nơi cấp không được bỏ trống"); return;
         }
         if ($scope.DOB === "" || $scope.DOB === null || $scope.DOB === undefined) {
             showAlert("Ngày sinh không được bỏ trống"); return;
         }
         var date1 = new Date()
-        if ($scope.DOB > date1.setYear(date1.getYear() - 18)) {
+        if ($scope.DOB > date1.setYear(date1.getFullYear() - 16)) {
             showAlert("Độ tuổi không phù hợp"); return;
         }
         if ($scope.school === "" || $scope.school === null || $scope.school === undefined) {
@@ -95,14 +98,33 @@ app.controller('stepOneCtrl', function ($scope, $state, $ionicPopup, finacialSrv
         finacialSrv.saveStepOne($scope.data);
         $state.go('steptwo')
     };
-    $scope.checkcmnd = function (IdentityId) {
-        if (IdentityId.length === 9) {
-            return true;
-        }
-    }
 
     //Positions
     finacialSrv.getPositions().then(function (response) {
         $scope.positions = response.data.ResponseData
     })
+
+    var name = new Date();
+    var fileone = "" + name.getFullYear() + name.getMonth().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + name.getHours() + name.getMinutes() + name.getMilliseconds();
+
+    //Upload File
+    $scope.uploadFile = function () {
+        var file = $scope.myFile;
+        fileone = fileone + "." + /[^.]+$/.exec(file[0].name);
+        finacialSrv.uploadFileToUrl(file, fileone);
+    };
+
+        $scope.myGoBack = function () {
+            $state.go('stepone')
+        };
+    // $scope.filetransfer = function () {
+    //     var file = $scope.myFile;
+    //     if(file !== undefined || file.size > 0)
+    //     {
+    //         var fileName = cordova.file.documentsDirectory+ file.name;
+    //         console.log(cordova.file.documentsDirectory);
+    //         finacialSrv.fileTransfer($cordovaFileTransfer,fileName);
+    //     }
+    //     // finacialSrv.fileTransfer($cordovaFileTransfer,file.name);
+    // }
 });
