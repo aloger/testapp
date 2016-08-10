@@ -234,6 +234,10 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             showAlert("Tình trạng hôn nhân không được bỏ trống");
             return;
         }
+        if (($scope.NumberDepent !== "" && $scope.NumberDepent !== null && $scope.NumberDepent !== undefined) && !(/^[0-9]+$/.test($scope.NumberDepent))) {
+            showAlert("Số người phụ thuộc tài chính phải là số");
+            return;
+        }
         if ($scope.HomeStatus === "" || $scope.HomeStatus === null || $scope.HomeStatus === undefined) {
             showAlert("Loại nhà sở hữu không được bỏ trống");
             return;
@@ -273,20 +277,20 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
 
         var validFormats = ['jpg', 'jpge', 'png', 'gif', 'pdf', 'doc', 'docx'];
         if (($scope.fileone !== "" && $scope.fileone !== null && $scope.fileone !== undefined) && $scope.fileone.length !== 0) {
-            if ((validFormats.indexOf(/[^.]+$/.exec($scope.fileone[0].name)[0]) === -1)) {
-                showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'");
+            if ((validFormats.indexOf(/[^.]+$/.exec($scope.fileone[0].name)[0].toLowerCase()) === -1)) {
+                showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc', 'docx'");
                 return;
             }
         }
         if (($scope.filetwo !== "" && $scope.filetwo !== null && $scope.filetwo !== undefined) && $scope.filetwo.length !== 0) {
-            if (validFormats.indexOf(/[^.]+$/.exec($scope.filetwo[0].name)[0]) === -1) {
-                showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'");
+            if (validFormats.indexOf(/[^.]+$/.exec($scope.filetwo[0].name)[0].toLowerCase()) === -1) {
+                showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc', 'docx'");
                 return;
             }
         }
         if (($scope.filethree !== "" && $scope.filethree !== null && $scope.filethree !== undefined) && $scope.filethree.length !== 0) {
-            if (validFormats.indexOf(/[^.]+$/.exec($scope.filethree[0].name)[0]) === -1) {
-                showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc'");
+            if (validFormats.indexOf(/[^.]+$/.exec($scope.filethree[0].name)[0].toLowerCase()) === -1) {
+                showAlert("Chỉ chấp nhận file có định dạng: 'jpg', 'jpge', 'png', 'gif', 'pdf', 'doc', 'docx'");
                 return;
             }
         }
