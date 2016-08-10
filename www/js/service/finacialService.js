@@ -42,7 +42,7 @@ app.factory("finacialSrv", function ($http) {
     $http.defaults.transformRequest = [function (data) {
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
-    var baseService = 'http://devtcgv.greentech.net.vn/api/App';
+    var baseService = 'http://devsale.thessc.com.vn/api/App';
 
     var stepone = angular.fromJson(window.localStorage['stepone'] || '[]');
     function stepOnePersist() {
