@@ -205,6 +205,14 @@ app.controller('stepTwoCtrl', function ($http, $scope, $ionicPopup, $state, fina
             showAlert("Quận/Huyện hiện tại không được bỏ trống");
             return;
         }
+        if (($scope.YearAddress !== "" && $scope.YearAddress !== null && $scope.YearAddress !== undefined) && !(/^[0-9]+$/.test($scope.YearAddress))) {
+            showAlert("Năm cư trú phải là số");
+            return;
+        }
+        if (($scope.MonthAddress !== "" && $scope.MonthAddress !== null && $scope.MonthAddress !== undefined) && !(/^[0-9]+$/.test($scope.MonthAddress))) {
+            showAlert("Tháng cư trú phải là số");
+            return;
+        }
         if (0 > $scope.MonthAddress || $scope.MonthAddress > 11) {
             showAlert("Tháng cư trú không được lớn hơn 11");
             return;
